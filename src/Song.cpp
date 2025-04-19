@@ -12,9 +12,9 @@ class Song
     string genre;
     string releaseDate;
 
-    int numDaysReleasedAfter2000{};
-    int duration{};
-    int popularity{};
+    int numDaysReleasedAfter2000;
+    int duration;
+    int popularity;
 
     void setNumDaysReleasedAfter2000(){
         std::tm t1 = {};
@@ -39,7 +39,7 @@ class Song
     }
 
 public:
-    Song()= default;
+    Song();
     Song(const string &title, const string &artist, const string &album, const string &genre,
          const string &releaseDate, const string& duration, const string& popularity){
         this->title = title;

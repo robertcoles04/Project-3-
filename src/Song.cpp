@@ -1,74 +1,60 @@
-#include <string>
-#include <sstream>
+#include "Song.h"
 #include <ctime>
 #include <iomanip>
+#include <sstream>
 using std::string;
 
-class Song
-{
-    string title;
-    string artist;
-    string album;
-    string genre;
-    string releaseDate;
+void Song::setNumDaysReleasedAfter2000(){
+    std::tm t1 = {};
+    std::tm t2 = {};
 
-    int numDaysReleasedAfter2000;
-    int duration;
-    int popularity;
+    // Parse input date (yyyy-mm-dd)
+    std::istringstream ss(releaseDate);
+    ss >> std::get_time(&t1, "%Y-%m-%d");
 
-    void setNumDaysReleasedAfter2000(){
-        std::tm t1 = {};
-        std::tm t2 = {};
+    // Set reference date to January 1st, 2000
+    t2.tm_year = 100; // year since 1900
+    t2.tm_mon = 0;            // January
+    t2.tm_mday = 1;           // 1st
 
-        // Parse input date (yyyy-mm-dd)
-        std::istringstream ss(releaseDate);
-        ss >> std::get_time(&t1, "%Y-%m-%d");
+    std::time_t time1 = std::mktime(&t1);
+    std::time_t time2 = std::mktime(&t2);
 
-        // Set reference date to January 1st, 2000
-        t2.tm_year = 100; // year since 1900
-        t2.tm_mon = 0;            // January
-        t2.tm_mday = 1;           // 1st
+    // Calculate the difference in seconds then convert to days
+    double difference = std::difftime(time1, time2) / (60 * 60 * 24);
 
-        std::time_t time1 = std::mktime(&t1);
-        std::time_t time2 = std::mktime(&t2);
+    numDaysReleasedAfter2000 = static_cast<int>(difference);
+}
 
-        // Calculate the difference in seconds then convert to days
-        double difference = std::difftime(time1, time2) / (60 * 60 * 24);
-
-        numDaysReleasedAfter2000 = static_cast<int>(difference);
-    }
-
-public:
-    Song();
-    Song(const string &title, const string &artist, const string &album, const string &genre,
+Song::Song(){}
+Song::Song(const string &title, const string &artist, const string &album, const string &genre,
          const string &releaseDate, const string& duration, const string& popularity){
-        this->title = title;
-        this->artist = artist;
-        this->album = album;
-        this->genre = genre;
-        this->releaseDate = releaseDate;
-        setNumDaysReleasedAfter2000();
-        this->duration = stoi(duration);
-        this->popularity = stoi(popularity);
-    }
+    this->title = title;
+    this->artist = artist;
+    this->album = album;
+    this->genre = genre;
+    this->releaseDate = releaseDate;
+    setNumDaysReleasedAfter2000();
+    this->duration = stoi(duration);
+    this->popularity = stoi(popularity);
+}
 
-    string getTitle() const{return title;}
-    string getArtist() const{return artist;}
-    string getAlbum() const{return album;}
-    string getGenre() const{return genre;}
-    string getReleaseDate() const{return releaseDate;}
-    int getNumDaysReleasedAfter2000() const{return numDaysReleasedAfter2000;}
-    int getDuration() const{return duration;}
-    int getPopularity() const{return popularity;}
+string Song::getTitle() const{return title;}
+string Song::getArtist() const{return artist;}
+string Song::getAlbum() const{return album;}
+string Song::getGenre() const{return genre;}
+string Song::getReleaseDate() const{return releaseDate;}
+int Song::getNumDaysReleasedAfter2000() const{return numDaysReleasedAfter2000;}
+int Song::getDuration() const{return duration;}
+int Song::getPopularity() const{return popularity;}
 
-    void setTitle(const string &title){this->title = title;}
-    void setArtist(const string &artist){this->artist = artist;}
-    void setAlbum(const string &album){this->album = album;}
-    void setGenre(const string &genre){this->genre = genre;}
-    void setReleaseDate(const string &releaseDate){
-      this->releaseDate = releaseDate;
-      setNumDaysReleasedAfter2000();
-    }
-    void setDuration(const string& duration){this->duration = stoi(duration);}
-    void setPopularity(const string& popularity){this->popularity = stoi(popularity);}
-};
+void Song::setTitle(const string &title){this->title = title;}
+void Song::setArtist(const string &artist){this->artist = artist;}
+void Song::setAlbum(const string &album){this->album = album;}
+void Song::setGenre(const string &genre){this->genre = genre;}
+void Song::setReleaseDate(const string &releaseDate){
+    this->releaseDate = releaseDate;
+    setNumDaysReleasedAfter2000();
+}
+void Song::setDuration(const string& duration){this->duration = stoi(duration);}
+void Song::setPopularity(const string& popularity){this->popularity = stoi(popularity);}

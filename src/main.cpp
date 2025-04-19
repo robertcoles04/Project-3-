@@ -2,47 +2,46 @@
 #include <fstream>
 #include <vector>
 #include <ctime>
+#include <string>
+#include "Song.cpp"
 using namespace std;
 
-struct Song{
+int main() {
     string title;
     string artist;
     string album;
     string genre;
-    string releasedate;
+    string releaseDate;
     int duration;
     int popularity;
 
-};
-
-std::vector<std::vector<int>> createAdjMatrix( std::vector<Song>& songs) {
-    size_t n = songs.size();
-    std::vector<std::vector<int>> matrix(n, std::vector<int>(n, 0));
-    for (size_t i = 0; i < n; ++i) {
-        for (size_t j = 0; j < n; ++j) {
-            if (i != j and abs(songs[i].popularity - songs[j].popularity) < 0.1f) {
-                matrix[i][j] = 1;
-            }
-        }
-    }
-
-    return matrix;
-}
-int main(){
-    string title;
-    string artist;
-    string album;
-    string genre;
-    string releasedate;
-    int duration;
-    int popularity;
     ifstream file("music.csv");
     if (!file.is_open()) {
         cerr << "Failed to open music.csv" << endl;
         return 1;
     }
-cout << "What type of genre do you like?" << endl;
-    cin >> genre;
-    cout << genre << endl;
+
+    cout << "What release year would you like the song to be? " << endl;
+    cin >> releaseDate;
+
+    cout << "Would you like a short or long duration? (short/long) " << endl;
+    string durPref;
+    cin >> durPref;
+    if (durPref == "short" || durPref == "Short") {
+        duration = 180;
+    } else if (durPref == "long" || durPref == "Long") {
+        duration = 300;
+    } else {
+        duration = 240;
+    }
+
+    cout << "How popular do you want the song to be? (0 - 100) " << endl;
+    cin >> popularity;
+
+    cout << "\nYou chose:\n"
+         << "Year:       " << releaseDate << "\n"
+         << "Max Length: " << duration << " seconds\n"
+         << "Popularity: " << popularity << " (0–100)\n";
+
     return 0;
 }

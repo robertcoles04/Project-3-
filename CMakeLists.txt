@@ -7,4 +7,5 @@ include_directories(src)
 
 add_executable(Main
         src/main.cpp
+        src/Song.cpp
 )

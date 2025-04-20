@@ -1,9 +1,13 @@
 #include <iostream>
 #include <fstream>
-#include <vector>
-#include <ctime>
 #include <string>
-#include "Song.cpp"
+#include <vector>
+#include <sstream>
+#include <chrono>
+#include "Song.h"
+#include "mergeSort.h"
+#include "quickSort.h"
+
 using namespace std;
 
 int main() {
@@ -41,7 +45,81 @@ int main() {
     cout << "\nYou chose:\n"
          << "Year:       " << releaseDate << "\n"
          << "Max Length: " << duration << " seconds\n"
-         << "Popularity: " << popularity << " (0–100)\n";
+         << "Popularity: " << popularity << " (0-100)\n";
+
+    vector<Song> filteredSongs;
+    string line;
+    getline(file, line);
+
+    while (getline(file, line)) {
+        stringstream ss(line);
+        string t, a, al, g, rd, dur, pop;
+
+        getline(ss, t, ',');
+        getline(ss, a, ',');
+        getline(ss, al, ',');
+        getline(ss, g, ',');
+        getline(ss, rd, ',');
+        getline(ss, dur, ',');
+        getline(ss, pop, ',');
+
+        Song song(t, a, al, g, rd, dur, pop);
+
+        if (song.getReleaseDate().substr(0, 4) == releaseDate &&
+            song.getDuration() <= duration &&
+            song.getPopularity() >= popularity) {
+            filteredSongs.push_back(song);
+        }
+    }
+
+    file.close();
+
+    if (filteredSongs.empty()) {
+        cout << "No songs matched your filter criteria.\n";
+        return 0;
+    }
+
+    cout << "\nSort by which attribute? (duration / popularity / release date): ";
+    string sortBy;
+    cin >> sortBy;
+
+    vector<Song> mergeSongs = filteredSongs;
+    vector<Song> quickSongs = filteredSongs;
+
+
+    auto startMerge = chrono::high_resolution_clock::now();
+    mergeSort(mergeSongs, 0, mergeSongs.size() - 1, sortBy);
+    auto endMerge = chrono::high_resolution_clock::now();
+    auto mergeTime = chrono::duration_cast<chrono::milliseconds>(endMerge - startMerge).count();
+
+    auto startQuick = chrono::high_resolution_clock::now();
+    quickSort(quickSongs, 0, quickSongs.size() - 1, sortBy);
+    auto endQuick = chrono::high_resolution_clock::now();
+    auto quickTime = chrono::duration_cast<chrono::milliseconds>(endQuick - startQuick).count();
+
+    cout << "\nTop 10 songs sorted by " << sortBy << " using Merge Sort:\n";
+    for (int i = 0; i < min(10, (int)mergeSongs.size()); ++i) {
+        const Song& s = mergeSongs[i];
+        cout << s.getTitle() << " | " << s.getArtist()
+             << " | " << s.getGenre()
+             << " | " << s.getReleaseDate()
+             << " | " << s.getDuration()
+             << "s | " << s.getPopularity() << endl;
+    }
+
+    cout << "\nTop 10 songs sorted by " << sortBy << " using Quick Sort:\n";
+    for (int i = 0; i < min(10, (int)quickSongs.size()); ++i) {
+        const Song& s = quickSongs[i];
+        cout << s.getTitle() << " | " << s.getArtist()
+             << " | " << s.getGenre()
+             << " | " << s.getReleaseDate()
+             << " | " << s.getDuration()
+             << "s | " << s.getPopularity() << endl;
+    }
+
+    cout << "\nSorting Time Comparison:\n";
+    cout << "Merge Sort: " << mergeTime << " ms\n";
+    cout << "Quick Sort: " << quickTime << " ms\n";
 
     return 0;
 }

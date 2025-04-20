@@ -43,7 +43,7 @@ int main() {
     cin >> popularity;
 
     cout << "\nYou chose:\n"
-         << "Year:       " << releaseDate << "\n"
+         << "Year:" << releaseDate << "\n"
          << "Max Length: " << duration << " seconds\n"
          << "Popularity: " << popularity << " (0-100)\n";
 

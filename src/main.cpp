@@ -10,6 +10,19 @@
 
 using namespace std;
 
+bool isPopularityGood(const string& popularity) {
+    if (popularity.length() > 3) {
+        return false;
+    }
+    if (!all_of(popularity.begin(), popularity.end(), [](char c){return isdigit(c);})){
+        return false;
+    }
+    if (stoi(popularity) > 100) {
+        return false;
+    }
+    return true;
+}
+
 int main() {
     ifstream file("music.csv");
     if (!file.is_open()) {
@@ -41,10 +54,18 @@ int main() {
         int duration;
         int popularity;
 
-        cout << "What release year would you like the song to be? " << endl;
-        cin >> releaseDate;
+        while (true) {
+            cout << "What release year would you like the song to be? " << endl;
+            cin >> releaseDate;
+            if (all_of(releaseDate.begin(), releaseDate.end(), [](char c){return isdigit(c);})){
+                break;
+            }
+            else {
+                cout << "bad input" << endl;
+            }
+        }
 
-        cout << "Would you like a short or long duration? (short/long) " << endl;
+        cout << "Would you like a short or long duration? (short/long; type anything else for medium)" << endl;
         string durPref;
         cin >> durPref;
         if (durPref == "short" || durPref == "Short") {
@@ -55,11 +76,21 @@ int main() {
             duration = 240;
         }
 
-        cout << "How popular do you want the song to be? (0 - 100) " << endl;
-        cin >> popularity;
+        string popPref;
+        while (true) {
+            cout << "How popular do you want the song to be? (0 - 100) " << endl;
+            cin >> popPref;
+            if (isPopularityGood(popPref)) {
+                popularity = stoi(popPref);
+                break;
+            }
+            else {
+                cout << "bad input" << endl;
+            }
+        }
 
         cout << "\nYou chose:\n"
-             << "Year:" << releaseDate << "\n"
+             << "Year: " << releaseDate << "\n"
              << "Max Length: " << duration << " seconds\n"
              << "Popularity: " << popularity << " (0-100)\n";
 

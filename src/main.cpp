@@ -115,57 +115,260 @@ int main() {
         //Change release date for binary search parsing
         releaseDate += "-01-01";
         
-        vector<Song> mergeSongs = songs;
-        vector<Song> quickSongs = songs;
+        if (sortBy == "all") {
+            //Create Vectors
+            vector<Song> mergeSongs1 = songs;
+            vector<Song> quickSongs1 = songs;
 
-        auto startMerge = chrono::high_resolution_clock::now();
-        mergeSort(mergeSongs, 0, mergeSongs.size() - 1, sortBy);
-        auto endMerge = chrono::high_resolution_clock::now();
-        auto mergeTime = chrono::duration_cast<chrono::milliseconds>(endMerge - startMerge).count();
+            vector<Song> mergeSongs2 = songs;
+            vector<Song> quickSongs2 = songs;
 
-        auto startQuick = chrono::high_resolution_clock::now();
-        quickSort(quickSongs, 0, quickSongs.size() - 1, sortBy);
-        auto endQuick = chrono::high_resolution_clock::now();
-        auto quickTime = chrono::duration_cast<chrono::milliseconds>(endQuick - startQuick).count();
+            vector<Song> mergeSongs3 = songs;
+            vector<Song> quickSongs3 = songs;
 
-        /* uncomment once binarySearch is done
-        vector<Song> filteredSongs = binarySearch(songs, 0, songs.size()-1, "duration", 50);
-        if (filteredSongs.empty()) {
-            cout << "No songs matched your filter criteria.\n";
-            return 0;
-        }*/
+            // vector<Song> mergeSongs = songs;
+            // vector<Song> quickSongs = songs;
 
-        cout << "\nTop 10 songs sorted by " << sortBy << " using Merge Sort:\n";
-        for (int i = 0; i < min(10, (int)mergeSongs.size()); ++i) {
-            const Song& s = mergeSongs[i];
-            cout << s.getTitle() << " | " << s.getArtist()
-                 << " | " << s.getGenre()
-                 << " | " << s.getReleaseDate()
-                 << " | " << s.getDuration()
-                 << "s | " << s.getPopularity() << endl;
+            //Duration
+            auto startMerge = chrono::high_resolution_clock::now();
+            mergeSort(mergeSongs1, 0, mergeSongs1.size() - 1, "duration");
+            auto endMerge = chrono::high_resolution_clock::now();
+            auto mergeTime = chrono::duration_cast<chrono::milliseconds>(endMerge - startMerge).count();
+
+            auto startQuick = chrono::high_resolution_clock::now();
+            quickSort(quickSongs1, 0, quickSongs1.size() - 1, "duration");
+            auto endQuick = chrono::high_resolution_clock::now();
+            auto quickTime = chrono::duration_cast<chrono::milliseconds>(endQuick - startQuick).count();
+
+            //Popularity
+            startMerge = chrono::high_resolution_clock::now();
+            mergeSort(mergeSongs2, 0, mergeSongs2.size() - 1, "popularity");
+            endMerge = chrono::high_resolution_clock::now();
+            mergeTime += chrono::duration_cast<chrono::milliseconds>(endMerge - startMerge).count();
+
+            startQuick = chrono::high_resolution_clock::now();
+            quickSort(quickSongs2, 0, quickSongs2.size() - 1, "popularity");
+            endQuick = chrono::high_resolution_clock::now();
+            quickTime += chrono::duration_cast<chrono::milliseconds>(endQuick - startQuick).count();
+
+            //releaseDate
+            startMerge = chrono::high_resolution_clock::now();
+            mergeSort(mergeSongs3, 0, mergeSongs3.size() - 1, "releaseDate");
+            endMerge = chrono::high_resolution_clock::now();
+            mergeTime = chrono::duration_cast<chrono::milliseconds>(endMerge - startMerge).count();
+
+            startQuick = chrono::high_resolution_clock::now();
+            quickSort(quickSongs3, 0, quickSongs3.size() - 1, "releaseDate");
+            endQuick = chrono::high_resolution_clock::now();
+            quickTime += chrono::duration_cast<chrono::milliseconds>(endQuick - startQuick).count();
+
+            //Genre
+
+
+            //Binary Search to find
+            vector<Song> filteredSongs1 = binarySearch(mergeSongs1, 0, mergeSongs1.size()-1, "duration", duration);
+            vector<Song> filteredSongs2 = binarySearch(mergeSongs2, 0, mergeSongs2.size()-1, "popularity", popularity);
+            vector<Song> filteredSongs3 = binarySearch(mergeSongs3, 0, mergeSongs3.size()-1, "releaseDate", releaseDate);
+
+            //Binary with quick sort
+            vector<Song> filteredSongs4 = binarySearch(quickSongs1, 0, quickSongs1.size()-1, "duration", duration);
+            vector<Song> filteredSongs5 = binarySearch(quickSongs2, 0, quickSongs2.size()-1, "popularity", popularity);
+            vector<Song> filteredSongs6 = binarySearch(quickSongs3, 0, quickSongs3.size()-1, "releaseDate", releaseDate);
+
+            //Combine
+            std::unordered_map<string, int> combined;
+
+            //Add Songs
+            for (int i = 0; i < filteredSongs1.size(); i++) {
+                combined[filteredSongs1[i].getTitle()] = 1;
+            }
+            for (int i = 0; i < filteredSongs2.size(); i++) {
+                if (combined.find(filteredSongs2[i].getTitle()) != combined.end()) {
+                    if (combined[filteredSongs2[i].getTitle()] == 1) {
+                        combined[filteredSongs2[i].getTitle()] = 2;
+                    }
+                }
+            }
+            for (int i = 0; i < filteredSongs3.size(); i++) {
+                if (combined.find(filteredSongs3[i].getTitle()) != combined.end()) {
+                    if (combined[filteredSongs3[i].getTitle()] == 2) {
+                        combined[filteredSongs3[i].getTitle()] = 3;
+                    }
+                    if (combined[filteredSongs3[i].getTitle()] == 1) {
+                        combined[filteredSongs3[i].getTitle()] = 2;
+                    }
+                }
+            }
+
+            //Quick
+            std::unordered_map<string, int> combined1;
+            for (int i = 0; i < filteredSongs4.size(); i++) {
+                combined1[filteredSongs4[i].getTitle()] = 1;
+            }
+            for (int i = 0; i < filteredSongs5.size(); i++) {
+                if (combined1.find(filteredSongs5[i].getTitle()) != combined1.end()) {
+                    if (combined1[filteredSongs5[i].getTitle()] == 1) {
+                        combined1[filteredSongs5[i].getTitle()] = 2;
+                    }
+                }
+            }
+            for (int i = 0; i < filteredSongs6.size(); i++) {
+                if (combined1.find(filteredSongs6[i].getTitle()) != combined1.end()) {
+                    if (combined1[filteredSongs6[i].getTitle()] == 2) {
+                        combined1[filteredSongs6[i].getTitle()] = 3;
+                    }
+                    if (combined[filteredSongs6[i].getTitle()] == 1) {
+                        combined[filteredSongs6[i].getTitle()] = 2;
+                    }
+                }
+            }
+
+            //Output
+            cout << "\nTop 10 songs sorted by " << sortBy << " using Merge Sort:\n";
+            int count = 0;
+            for (int i = 0; i < filteredSongs1.size(); ++i) {
+                const Song& s = filteredSongs1[i];
+                if (combined[s.getTitle()] == 3) {
+                    cout << s.getTitle() << " | " << s.getArtist()
+                     << " | " << s.getGenre()
+                     << " | " << s.getReleaseDate()
+                     << " | " << s.getDuration()
+                     << "s | " << s.getPopularity() << endl;
+                    count++;
+                }
+                if (count == 10) {break;}
+            }
+
+            cout << "\nTop 10 songs sorted by " << sortBy << " using Quick Sort:\n";
+            count = 0;
+            for (int i = 0; i < filteredSongs4.size(); ++i) {
+                const Song& s = filteredSongs4[i];
+                if (combined1[s.getTitle()] == 3) {
+                    cout << s.getTitle() << " | " << s.getArtist()
+                     << " | " << s.getGenre()
+                     << " | " << s.getReleaseDate()
+                     << " | " << s.getDuration()
+                     << "s | " << s.getPopularity() << endl;
+                    count++;
+                }
+                if (count == 10) {break;}
+            }
+
+            cout << "\nSorting Time Comparison:\n";
+            cout << "Merge Sort: " << mergeTime << " ms\n";
+            cout << "Quick Sort: " << quickTime << " ms\n";
+            string goAgain;
+            cout << "Would like to go again? Y or y for yes, any other key for no" << endl;
+            cin >> goAgain;
+            if (goAgain != "Y" && goAgain != "y") {
+                break;
+            }
         }
 
-        cout << "\nTop 10 songs sorted by " << sortBy << " using Quick Sort:\n";
-        for (int i = 0; i < min(10, (int)quickSongs.size()); ++i) {
-            const Song& s = quickSongs[i];
-            cout << s.getTitle() << " | " << s.getArtist()
-                 << " | " << s.getGenre()
-                 << " | " << s.getReleaseDate()
-                 << " | " << s.getDuration()
-                 << "s | " << s.getPopularity() << endl;
-        }
+        else {
+            vector<Song> mergeSongs = songs;
+            vector<Song> quickSongs = songs;
 
-        cout << "\nSorting Time Comparison:\n";
-        cout << "Merge Sort: " << mergeTime << " ms\n";
-        cout << "Quick Sort: " << quickTime << " ms\n";
-        string goAgain;
-        cout << "Would like to go again? Y or y for yes, any other key for no" << endl;
-        cin >> goAgain;
-        if (goAgain != "Y" && goAgain != "y") {
-            cout << "Goodbye!" << endl;
-            break;
+            auto startMerge = chrono::high_resolution_clock::now();
+            mergeSort(mergeSongs, 0, mergeSongs.size() - 1, sortBy);
+            auto endMerge = chrono::high_resolution_clock::now();
+            auto mergeTime = chrono::duration_cast<chrono::milliseconds>(endMerge - startMerge).count();
+
+            auto startQuick = chrono::high_resolution_clock::now();
+            quickSort(quickSongs, 0, quickSongs.size() - 1, sortBy);
+            auto endQuick = chrono::high_resolution_clock::now();
+            auto quickTime = chrono::duration_cast<chrono::milliseconds>(endQuick - startQuick).count();
+
+
+            if (sortBy == "duration") {
+                int target = duration;
+                vector<Song> filteredSongs1 = binarySearch(mergeSongs, 0, songs.size()-1, sortBy, target);
+                vector<Song> filteredSongs2 = binarySearch(quickSongs, 0, songs.size()-1, sortBy, target);
+
+                cout << "\nTop 10 songs sorted by " << sortBy << " using Merge Sort:\n";
+                for (int i = 45; i < 55; ++i) {
+                    const Song& s = filteredSongs1[i];
+                    cout << s.getTitle() << " | " << s.getArtist()
+                         << " | " << s.getGenre()
+                         << " | " << s.getReleaseDate()
+                         << " | " << s.getDuration()
+                         << "s | " << s.getPopularity() << endl;
+                }
+
+                cout << "\nTop 10 songs sorted by " << sortBy << " using Quick Sort:\n";
+                for (int i = 45; i < 55; ++i) {
+                    const Song& s = filteredSongs2[i];
+                    cout << s.getTitle() << " | " << s.getArtist()
+                         << " | " << s.getGenre()
+                         << " | " << s.getReleaseDate()
+                         << " | " << s.getDuration()
+                         << "s | " << s.getPopularity() << endl;
+                }
+            }
+
+            if (sortBy == "popularity") {
+                int target = popularity;
+                vector<Song> filteredSongs1 = binarySearch(mergeSongs, 0, songs.size()-1, sortBy, target);
+                vector<Song> filteredSongs2 = binarySearch(quickSongs, 0, songs.size()-1, sortBy, target);
+
+                cout << "\nTop 10 songs sorted by " << sortBy << " using Merge Sort:\n";
+                for (int i = 45; i < 55; ++i) {
+                    const Song& s = filteredSongs1[i];
+                    cout << s.getTitle() << " | " << s.getArtist()
+                         << " | " << s.getGenre()
+                         << " | " << s.getReleaseDate()
+                         << " | " << s.getDuration()
+                         << "s | " << s.getPopularity() << endl;
+                }
+
+                cout << "\nTop 10 songs sorted by " << sortBy << " using Quick Sort:\n";
+                for (int i = 45; i < 55; ++i) {
+                    const Song& s = filteredSongs2[i];
+                    cout << s.getTitle() << " | " << s.getArtist()
+                         << " | " << s.getGenre()
+                         << " | " << s.getReleaseDate()
+                         << " | " << s.getDuration()
+                         << "s | " << s.getPopularity() << endl;
+                }
+            }
+
+            if (sortBy == "releaseDate") {
+                string target = releaseDate;
+                vector<Song> filteredSongs1 = binarySearch(mergeSongs, 0, songs.size()-1, sortBy, target);
+                vector<Song> filteredSongs2 = binarySearch(quickSongs, 0, songs.size()-1, sortBy, target);
+
+                cout << "\nTop 10 songs sorted by " << sortBy << " using Merge Sort:\n";
+                for (int i = 45; i < 55; ++i) {
+                    const Song& s = filteredSongs1[i];
+                    cout << s.getTitle() << " | " << s.getArtist()
+                         << " | " << s.getGenre()
+                         << " | " << s.getReleaseDate()
+                         << " | " << s.getDuration()
+                         << "s | " << s.getPopularity() << endl;
+                }
+
+                cout << "\nTop 10 songs sorted by " << sortBy << " using Quick Sort:\n";
+                for (int i = 45; i < 55; ++i) {
+                    const Song& s = filteredSongs2[i];
+                    cout << s.getTitle() << " | " << s.getArtist()
+                         << " | " << s.getGenre()
+                         << " | " << s.getReleaseDate()
+                         << " | " << s.getDuration()
+                         << "s | " << s.getPopularity() << endl;
+                }
+            }
+
+            cout << "\nSorting Time Comparison:\n";
+            cout << "Merge Sort: " << mergeTime << " ms\n";
+            cout << "Quick Sort: " << quickTime << " ms\n";
+            string goAgain;
+            cout << "Would like to go again? Y or y for yes, any other key for no" << endl;
+            cin >> goAgain;
+            if (goAgain != "Y" && goAgain != "y") {
+                cout << "Goodbye!" << endl;
+                break;
+            }
         }
-    }
 
     return 0;
 }

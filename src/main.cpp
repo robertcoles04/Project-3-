@@ -4,9 +4,11 @@
 #include <vector>
 #include <sstream>
 #include <chrono>
+#include <unordered_map>
 #include "Song.h"
 #include "mergeSort.h"
 #include "quickSort.h"
+#include "binarySearch.h"
 
 using namespace std;
 
@@ -110,6 +112,9 @@ int main() {
             }
         }
 
+        //Change release date for binary search parsing
+        releaseDate += "-01-01";
+        
         vector<Song> mergeSongs = songs;
         vector<Song> quickSongs = songs;
 

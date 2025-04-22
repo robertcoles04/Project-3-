@@ -14,19 +14,19 @@ vector<Song> binaryRD(std::vector<Song> songs, string target, int low, int high)
         if (target == songs[mid].getReleaseDate()) {
             if (target > "2018-1-1") {
                 for (int i = 0; i < 5000; i++) {
-                    //Add the 10 songs surrounding mid
+                    //Add the 5000 songs below mid
                     result.push_back(songs[mid - i]);
                 }
             }
             else if (target < "2002-1-1") {
                 for (int i = 0; i < 5000; i++) {
-                    //Add the 10 songs surrounding mid
+                    //Add the 5000 songs above mid
                     result.push_back(songs[mid + i]);
                 }
             }
             else {
                 for (int i = 0; i < 5000; i++) {
-                    //Add the 10 songs surrounding mid
+                    //Add the 5000 songs surrounding mid
                     result.push_back(songs[mid - 2500 + i]);
                 }
             }
@@ -52,19 +52,19 @@ vector<Song> binaryDuration(std::vector<Song> songs, int target, int low, int hi
         if (target == songs[mid].getDuration()) {
             if (target > 250) {
                 for (int i = 0; i < 5000; i++) {
-                    //Add the 10 songs surrounding mid
+                    //Add the 5000 songs below mid
                     result.push_back(songs[mid - i]);
                 }
             }
             else if (target < 180) {
                 for (int i = 0; i < 5000; i++) {
-                    //Add the 10 songs surrounding mid
+                    //Add the 5000 songs above mid
                     result.push_back(songs[mid + i]);
                 }
             }
             else {
                 for (int i = 0; i < 5000; i++) {
-                    //Add the 10 songs surrounding mid
+                    //Add the 5000 songs surrounding mid
                     result.push_back(songs[mid - 2500 + i]);
                 }
             }
@@ -90,19 +90,19 @@ vector<Song> binaryPop(std::vector<Song> songs, int target, int low, int high) {
         if (target == songs[mid].getPopularity()) {
             if (target > 80) {
                 for (int i = 0; i < 5000; i++) {
-                    //Add the 10 songs surrounding mid
+                    //Add the 5000 songs below mid
                     result.push_back(songs[mid - i]);
                 }
             }
             else if (target < 20) {
                 for (int i = 0; i < 5000; i++) {
-                    //Add the 10 songs surrounding mid
+                    //Add the 5000 songs above mid
                     result.push_back(songs[mid + i]);
                 }
             }
             else {
                 for (int i = 0; i < 5000; i++) {
-                    //Add the 10 songs surrounding mid
+                    //Add the 5000 songs surrounding mid
                     result.push_back(songs[mid - 2500 + i]);
                 }
             }

@@ -55,7 +55,7 @@ int main() {
         int popularity;
 
         while (true) {
-            cout << "What release year would you like the song to be? " << endl;
+            cout << "What release year would you like the song to be? (2000 - 2020) " << endl;
             cin >> releaseDate;
             if (all_of(releaseDate.begin(), releaseDate.end(), [](char c){return isdigit(c);})){
                 break;
@@ -94,7 +94,7 @@ int main() {
              << "Max Length: " << duration << " seconds\n"
              << "Popularity: " << popularity << " (0-100)\n";
 
-        cout << "\nSort by which attribute? (duration / popularity / release date): ";
+        cout << "\nSort by which attribute? (duration / popularity / releaseDate): ";
         string sortBy;
         cin >> sortBy;
 

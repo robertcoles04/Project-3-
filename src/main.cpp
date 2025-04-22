@@ -356,7 +356,7 @@ int main() {
                 vector<Song> filteredSongs2 = binarySearch(quickSongs, 0, songs.size() - 1, sortBy, target);
 
                 // Output
-                cout << "\nTop 10 songs sorted by " << sortBy << " using Merge Sort:\n";
+                cout << "\nTop 5 songs sorted by " << sortBy << " using Merge Sort:\n";
                 int count = 0;
                 for (int i = 0; i < 5000; ++i) {
                     const Song &s = filteredSongs2[i];
@@ -370,7 +370,7 @@ int main() {
                     }
                     if (count == 10) {break;}
                 }
-                cout << "\nTop 10 songs sorted by " << sortBy << " using Quick Sort:\n";
+                cout << "\nTop 5 songs sorted by " << sortBy << " using Quick Sort:\n";
                 count = 0;
                 for (int i = 0; i < 5000; ++i) {
                     const Song &s = filteredSongs2[i];

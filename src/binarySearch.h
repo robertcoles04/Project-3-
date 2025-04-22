@@ -5,30 +5,6 @@
 
 using namespace std;
 
-//For genre
-vector<Song> binaryGenre(std::vector<Song> songs, string target, int low, int high) {
-    vector<Song> result;
-    if (high >= low) {
-        int mid = (high - low) / 2 + low;
-
-        if (target == songs[mid].getGenre()) {
-            for (int i = 0; i < 100; i++) {
-                //Add the 10 songs surrounding mid
-                result.push_back(songs[mid - 50 + i]);
-            }
-            return result;
-        }
-
-        if (songs[mid].getGenre() > target) {
-            return binaryGenre(songs, target, low, mid - 1);
-        }
-        if (songs[mid].getGenre() < target) {
-            return binaryGenre(songs, target, mid + 1, high);
-        }
-    }
-    return result;
-}
-
 // For RD
 vector<Song> binaryRD(std::vector<Song> songs, string target, int low, int high) {
     vector<Song> result;
@@ -36,9 +12,23 @@ vector<Song> binaryRD(std::vector<Song> songs, string target, int low, int high)
         int mid = (high - low) / 2 + low;
 
         if (target == songs[mid].getReleaseDate()) {
-            for (int i = 0; i < 5000; i++) {
-                //Add the 10 songs surrounding mid
-                result.push_back(songs[mid - 2500 + i]);
+            if (target > "2017-1-1") {
+                for (int i = 0; i < 5000; i++) {
+                    //Add the 10 songs surrounding mid
+                    result.push_back(songs[mid - 5000 + i]);
+                }
+            }
+            else if (target < "2003-1-1") {
+                for (int i = 0; i < 5000; i++) {
+                    //Add the 10 songs surrounding mid
+                    result.push_back(songs[mid + 5000 - i]);
+                }
+            }
+            else {
+                for (int i = 0; i < 5000; i++) {
+                    //Add the 10 songs surrounding mid
+                    result.push_back(songs[mid - 2500 + i]);
+                }
             }
             return result;
         }
@@ -60,9 +50,23 @@ vector<Song> binaryDuration(std::vector<Song> songs, int target, int low, int hi
         int mid = (high - low) / 2 + low;
 
         if (target == songs[mid].getDuration()) {
-            for (int i = 0; i < 5000; i++) {
-                //Add the 10 songs surrounding mid
-                result.push_back(songs[mid - 2500 + i]);
+            if (target > 250) {
+                for (int i = 0; i < 5000; i++) {
+                    //Add the 10 songs surrounding mid
+                    result.push_back(songs[mid - 5000 + i]);
+                }
+            }
+            else if (target < 180) {
+                for (int i = 0; i < 5000; i++) {
+                    //Add the 10 songs surrounding mid
+                    result.push_back(songs[mid + 5000 - i]);
+                }
+            }
+            else {
+                for (int i = 0; i < 5000; i++) {
+                    //Add the 10 songs surrounding mid
+                    result.push_back(songs[mid - 2500 + i]);
+                }
             }
             return result;
         }
@@ -84,9 +88,23 @@ vector<Song> binaryPop(std::vector<Song> songs, int target, int low, int high) {
         int mid = (high - low) / 2 + low;
 
         if (target == songs[mid].getPopularity()) {
-            for (int i = 0; i < 5000; i++) {
-                //Add the 10 songs surrounding mid
-                result.push_back(songs[mid - 2500 + i]);
+            if (target > 80) {
+                for (int i = 0; i < 5000; i++) {
+                    //Add the 10 songs surrounding mid
+                    result.push_back(songs[mid - 5000 + i]);
+                }
+            }
+            else if (target < 20) {
+                for (int i = 0; i < 5000; i++) {
+                    //Add the 10 songs surrounding mid
+                    result.push_back(songs[mid + 5000 - i]);
+                }
+            }
+            else {
+                for (int i = 0; i < 5000; i++) {
+                    //Add the 10 songs surrounding mid
+                    result.push_back(songs[mid - 2500 + i]);
+                }
             }
             return result;
         }
@@ -122,11 +140,6 @@ int convertToInt(const std::string& val) {
 // CALL THIS. Input vector of song objects, 0 for low index, songs.size() - 1, attribute of song, and search item
 template <typename T>
 std::vector<Song> binarySearch(std::vector<Song>& songs, int low, int high, const std::string& type, T target) {
-    if (type == "genre") {
-        std::string target1 = convertToString(target);
-        return binaryGenre(songs, target1, low, high);
-    }
-
     if (type == "releaseDate") {
         std::string target1 = convertToString(target);
         return binaryRD(songs, target1, low, high);

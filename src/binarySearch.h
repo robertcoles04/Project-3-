@@ -5,29 +5,29 @@
 
 using namespace std;
 
-// For genre
-// vector<Song> binaryGenre(std::vector<Song> songs, string target, int low, int high) {
-//     vector<Song> result;
-//     if (high >= low) {
-//         int mid = (high - low) / 2 + low;
+//For genre
+vector<Song> binaryGenre(std::vector<Song> songs, string target, int low, int high) {
+    vector<Song> result;
+    if (high >= low) {
+        int mid = (high - low) / 2 + low;
 
-//         if (target == songs[mid].getGenre()) {
-//             for (int i = 0; i < 100; i++) {
-//                 //Add the 10 songs surrounding mid
-//                 result.push_back(songs[mid - 50 + i]);
-//             }
-//             return result;
-//         }
+        if (target == songs[mid].getGenre()) {
+            for (int i = 0; i < 100; i++) {
+                //Add the 10 songs surrounding mid
+                result.push_back(songs[mid - 50 + i]);
+            }
+            return result;
+        }
 
-//         if (songs[mid].getGenre() > target) {
-//             return binaryGenre(songs, target, low, mid - 1);
-//         }
-//         if (songs[mid].getGenre() < target) {
-//             return binaryGenre(songs, target, mid + 1, high);
-//         }
-//     }
-//     return result;
-// }
+        if (songs[mid].getGenre() > target) {
+            return binaryGenre(songs, target, low, mid - 1);
+        }
+        if (songs[mid].getGenre() < target) {
+            return binaryGenre(songs, target, mid + 1, high);
+        }
+    }
+    return result;
+}
 
 // For RD
 vector<Song> binaryRD(std::vector<Song> songs, string target, int low, int high) {
@@ -101,58 +101,44 @@ vector<Song> binaryPop(std::vector<Song> songs, int target, int low, int high) {
     return result;
 }
 
+//Conversion helpers
+std::string convertToString(const std::string& val) {
+    return val;
+}
+
+template <typename T>
+std::string convertToString(const T& val) {
+    return std::to_string(val);
+}
+
+int convertToInt(int val) {
+    return val;
+}
+
+int convertToInt(const std::string& val) {
+    return std::stoi(val);
+}
+
 // CALL THIS. Input vector of song objects, 0 for low index, songs.size() - 1, attribute of song, and search item
-vector<Song> binarySearch(std::vector<Song>& songs, int low, int high, const string& type, auto target) {
-    //Search based on attribute
+template <typename T>
+std::vector<Song> binarySearch(std::vector<Song>& songs, int low, int high, const std::string& type, T target) {
     if (type == "genre") {
-        string target1;
-        if constexpr (std::is_same<decltype(target), std::string>::value) {
-            target1 = target;
-        }
-        else {
-            target1 = std::to_string(target);
-        }
-        vector<Song> genreSongs;
-        genreSongs = binaryGenre(songs, target1, low, high);
-        return genreSongs;
+        std::string target1 = convertToString(target);
+        return binaryGenre(songs, target1, low, high);
     }
 
     if (type == "releaseDate") {
-        string target1;
-        if constexpr (std::is_same<decltype(target), std::string>::value) {
-            target1 = target;
-        }
-        else {
-            target1 = std::to_string(target);
-        }
-        vector<Song> releaseSongs;
-        releaseSongs = binaryRD(songs, target1, low, high);
-        return releaseSongs;
+        std::string target1 = convertToString(target);
+        return binaryRD(songs, target1, low, high);
     }
 
     if (type == "duration") {
-        int target1;
-        if constexpr (std::is_same<decltype(target), int>::value) {
-            target1 = target;
-        }
-        else {
-            target1 = stoi(target);
-        }
-        vector<Song> durationSongs;
-        durationSongs = binaryDuration(songs, target1, low, high);
-        return durationSongs;
+        int target1 = convertToInt(target);
+        return binaryDuration(songs, target1, low, high);
     }
 
     if (type == "popularity") {
-        int target1;
-        if constexpr (std::is_same<decltype(target), int>::value) {
-            target1 = target;
-        }
-        else {
-            target1 = stoi(target);
-        }
-        vector<Song> popularitySongs;
-        popularitySongs = binaryPop(songs, target1, low, high);
-        return popularitySongs;
+        int target1 = convertToInt(target);
+        return binaryPop(songs, target1, low, high);
     }
 }

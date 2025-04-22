@@ -6,28 +6,28 @@
 using namespace std;
 
 // For genre
-vector<Song> binaryGenre(std::vector<Song> songs, string target, int low, int high) {
-    vector<Song> result;
-    if (high >= low) {
-        int mid = (high - low) / 2 + low;
+// vector<Song> binaryGenre(std::vector<Song> songs, string target, int low, int high) {
+//     vector<Song> result;
+//     if (high >= low) {
+//         int mid = (high - low) / 2 + low;
 
-        if (target == songs[mid].getGenre()) {
-            for (int i = 0; i < 100; i++) {
-                //Add the 10 songs surrounding mid
-                result.push_back(songs[mid - 50 + i]);
-            }
-            return result;
-        }
+//         if (target == songs[mid].getGenre()) {
+//             for (int i = 0; i < 100; i++) {
+//                 //Add the 10 songs surrounding mid
+//                 result.push_back(songs[mid - 50 + i]);
+//             }
+//             return result;
+//         }
 
-        if (songs[mid].getGenre() > target) {
-            return binaryGenre(songs, target, low, mid - 1);
-        }
-        if (songs[mid].getGenre() < target) {
-            return binaryGenre(songs, target, mid + 1, high);
-        }
-    }
-    return result;
-}
+//         if (songs[mid].getGenre() > target) {
+//             return binaryGenre(songs, target, low, mid - 1);
+//         }
+//         if (songs[mid].getGenre() < target) {
+//             return binaryGenre(songs, target, mid + 1, high);
+//         }
+//     }
+//     return result;
+// }
 
 // For RD
 vector<Song> binaryRD(std::vector<Song> songs, string target, int low, int high) {

@@ -87,7 +87,7 @@ void quickSort(std::vector<Song>& songs, int low, int high, const string& type) 
         quickGenre(songs, low, high);
     }
 
-    if (type == "release date") {
+    if (type == "releaseDate") {
         quickRD(songs, low, high);
     }
 

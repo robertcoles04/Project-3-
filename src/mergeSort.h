@@ -38,7 +38,7 @@ void merge(vector<Song>& songs, int left, int mid, int right, const string& comp
                 j++;
             }
         }
-        else if (comparison == "release date") {
+        else if (comparison == "releaseDate") {
             if (X[i].getReleaseDate() <= Y[j].getReleaseDate())
             {
                 songs[k] = X[i];

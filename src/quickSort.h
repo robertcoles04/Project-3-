@@ -4,24 +4,24 @@
 
 using namespace std;
 
-// For genre
-// void quickGenre(std::vector<Song>& songs, int low, int high) {
-//     if (low < high) {
-//         int pivot = low;
-//         string val = songs[pivot].getGenre();
+//For genre
+void quickGenre(std::vector<Song>& songs, int low, int high) {
+    if (low < high) {
+        int pivot = low;
+        string val = songs[pivot].getGenre();
 
-//         for (int i = low + 1; i <= high; i++) {
-//             if (songs[i].getGenre() < val) {
-//                 pivot++;
-//                 std::swap(songs[i], songs[pivot]);
-//             }
-//         }
-//         std::swap(songs[low], songs[pivot]);
+        for (int i = low + 1; i <= high; i++) {
+            if (songs[i].getGenre() < val) {
+                pivot++;
+                std::swap(songs[i], songs[pivot]);
+            }
+        }
+        std::swap(songs[low], songs[pivot]);
 
-//         quickGenre(songs, low, pivot - 1);
-//         quickGenre(songs, pivot + 1, high);
-//     }
-// }
+        quickGenre(songs, low, pivot - 1);
+        quickGenre(songs, pivot + 1, high);
+    }
+}
 
 // For RD
 void quickRD(std::vector<Song>& songs, int low, int high) {

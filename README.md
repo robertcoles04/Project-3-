@@ -1,5 +1,9 @@
 <H1> COP3530 - Project 3 </h1>
-This is the README file for how to run our project. 
+This is the README file for how to run our project giving a step by step guide and pointers.
+
+### Downloading Repository
+
+
 This is the template for Project 3 repositories. It includes all the assignment instructions and documentation to help you use GitHub.
 
 <h2> Table of Contents </h2>

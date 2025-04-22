@@ -12,16 +12,16 @@ vector<Song> binaryRD(std::vector<Song> songs, string target, int low, int high)
         int mid = (high - low) / 2 + low;
 
         if (target == songs[mid].getReleaseDate()) {
-            if (target > "2017-1-1") {
+            if (target > "2018-1-1") {
                 for (int i = 0; i < 5000; i++) {
                     //Add the 10 songs surrounding mid
-                    result.push_back(songs[mid - 5000 + i]);
+                    result.push_back(songs[mid - i]);
                 }
             }
-            else if (target < "2003-1-1") {
+            else if (target < "2002-1-1") {
                 for (int i = 0; i < 5000; i++) {
                     //Add the 10 songs surrounding mid
-                    result.push_back(songs[mid + 5000 - i]);
+                    result.push_back(songs[mid + i]);
                 }
             }
             else {
@@ -53,13 +53,13 @@ vector<Song> binaryDuration(std::vector<Song> songs, int target, int low, int hi
             if (target > 250) {
                 for (int i = 0; i < 5000; i++) {
                     //Add the 10 songs surrounding mid
-                    result.push_back(songs[mid - 5000 + i]);
+                    result.push_back(songs[mid - i]);
                 }
             }
             else if (target < 180) {
                 for (int i = 0; i < 5000; i++) {
                     //Add the 10 songs surrounding mid
-                    result.push_back(songs[mid + 5000 - i]);
+                    result.push_back(songs[mid + i]);
                 }
             }
             else {
@@ -91,13 +91,13 @@ vector<Song> binaryPop(std::vector<Song> songs, int target, int low, int high) {
             if (target > 80) {
                 for (int i = 0; i < 5000; i++) {
                     //Add the 10 songs surrounding mid
-                    result.push_back(songs[mid - 5000 + i]);
+                    result.push_back(songs[mid - i]);
                 }
             }
             else if (target < 20) {
                 for (int i = 0; i < 5000; i++) {
                     //Add the 10 songs surrounding mid
-                    result.push_back(songs[mid + 5000 - i]);
+                    result.push_back(songs[mid + i]);
                 }
             }
             else {

@@ -12,10 +12,11 @@ class Song
     string genre;
     string releaseDate;
 
-    int numDaysReleasedAfter2000;
+    int numDaysReleasedAfter2000; // Can be used to compare release dates of different songs
     int duration;
     int popularity;
 
+    // Sets the attribute numDaysReleasedAfter2000 based on what the value of the releaseDate attribute is
     void setNumDaysReleasedAfter2000();
 
 public:

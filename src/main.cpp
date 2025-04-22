@@ -13,6 +13,7 @@
 
 using namespace std;
 
+// To check user input for popularity
 bool isPopularityGood(const string& popularity) {
     if (popularity.length() > 3) {
         return false;
@@ -35,6 +36,7 @@ int main() {
     vector<Song> songs;
     string line;
     getline(file, line);
+    // Read through the dataset, create a Song object for each song, and add each one to the vector called songs
     while (getline(file, line)) {
         stringstream ss(line);
         string t, a, al, g, rd, dur, pop;
@@ -56,11 +58,13 @@ int main() {
             "Hello! Welcome to the Song Finder. We're going to find songs that meet your specifications.\n"
             "___________________________________________________________________________________________" << endl;
 
+    // while loop to allow the user to use the program multiple times without it stopping
     while (true) {
         string releaseDate;
         int duration;
         int popularity;
 
+        // Loop to ask user for release year until they give valid input
         while (true) {
             cout << "What release year would you like the songs to be? (2000 - 2020) " << endl;
             cin >> releaseDate;
@@ -77,11 +81,10 @@ int main() {
             }
             if (all_of(releaseDate.begin(), releaseDate.end(), [](char c) { return isdigit(c); })) {
                 break;
-            } else {
-                cout << "bad input" << endl;
             }
         }
 
+        // Ask user for duration preference
         cout << "Would you like a short or long duration? (short/long; type anything else for medium)" << endl;
         string durPref;
         cin >> durPref;
@@ -93,6 +96,7 @@ int main() {
             duration = 240;
         }
 
+        // Loop to ask user for popularity preference until they give valid input
         string popPref;
         while (true) {
             cout << "How popular do you want the songs to be? (0 - 100) " << endl;
@@ -110,6 +114,7 @@ int main() {
              << "Max Length: " << duration << " seconds\n"
              << "Popularity: " << popularity << " (0-100)\n";
 
+        // Loop to ask user for which attribute they want to sort the outputted songs by until they give valid input
         string sortBy;
         while (true) {
             cout << "\nSort by which attribute? (duration / popularity / releaseDate / all): ";
@@ -135,55 +140,61 @@ int main() {
             vector<Song> mergeSongs3 = songs;
             vector<Song> quickSongs3 = songs;
 
+            // Sort songs based on duration using merge sort
             auto startMerge = chrono::high_resolution_clock::now();
             mergeSort(mergeSongs1, 0, mergeSongs1.size() - 1, "duration");
             auto endMerge = chrono::high_resolution_clock::now();
             auto mergeTime = chrono::duration_cast<chrono::milliseconds>(endMerge - startMerge).count();
 
+            // Sort songs based on duration using merge sort
             auto startQuick = chrono::high_resolution_clock::now();
             quickSort(quickSongs1, 0, quickSongs1.size() - 1, "duration");
             auto endQuick = chrono::high_resolution_clock::now();
             auto quickTime = chrono::duration_cast<chrono::milliseconds>(endQuick - startQuick).count();
 
-            //Popularity
+            // Sort songs based on popularity using merge sort
             startMerge = chrono::high_resolution_clock::now();
             mergeSort(mergeSongs2, 0, mergeSongs2.size() - 1, "popularity");
             endMerge = chrono::high_resolution_clock::now();
             mergeTime += chrono::duration_cast<chrono::milliseconds>(endMerge - startMerge).count();
 
+            // Sort songs based on popularity using quick sort
             startQuick = chrono::high_resolution_clock::now();
             quickSort(quickSongs2, 0, quickSongs2.size() - 1, "popularity");
             endQuick = chrono::high_resolution_clock::now();
             quickTime += chrono::duration_cast<chrono::milliseconds>(endQuick - startQuick).count();
 
-            //releaseDate
+            // Sort songs based on release date using merge sort
             startMerge = chrono::high_resolution_clock::now();
             mergeSort(mergeSongs3, 0, mergeSongs3.size() - 1, "releaseDate");
             endMerge = chrono::high_resolution_clock::now();
             mergeTime = chrono::duration_cast<chrono::milliseconds>(endMerge - startMerge).count();
 
+            // Sort songs based on release date using quick sort
             startQuick = chrono::high_resolution_clock::now();
             quickSort(quickSongs3, 0, quickSongs3.size() - 1, "releaseDate");
             endQuick = chrono::high_resolution_clock::now();
             quickTime += chrono::duration_cast<chrono::milliseconds>(endQuick - startQuick).count();
 
-            //Binary Search to find
+            // Binary Search to create vectors of songs which are each sorted by one of the three attributes
+            // Conduct binary search on the vectors sorted by merge sort
             vector<Song> filteredSongs1 = binarySearch(mergeSongs1, 0, mergeSongs1.size() - 1, "duration", duration);
             vector<Song> filteredSongs2 = binarySearch(mergeSongs2, 0, mergeSongs2.size() - 1, "popularity",
                                                        popularity);
             vector<Song> filteredSongs3 = binarySearch(mergeSongs3, 0, mergeSongs3.size() - 1, "releaseDate",
                                                        releaseDate);
 
-            //Binary with quick sort
+            // Conduct binary search on the vectors sorted by quick sort
             vector<Song> filteredSongs4 = binarySearch(quickSongs1, 0, quickSongs1.size() - 1, "duration", duration);
             vector<Song> filteredSongs5 = binarySearch(quickSongs2, 0, quickSongs2.size() - 1, "popularity",
                                                        popularity);
             vector<Song> filteredSongs6 = binarySearch(quickSongs3, 0, quickSongs3.size() - 1, "releaseDate",
                                                        releaseDate);
 
-            //Combine
+            // This unordered map will contain all of the songs in the first three filteredSong vectors.
+            // (Those vectors were created by filtering the vectors sorted by merge sort)
+            // The songs that are in all three vectors will have a value of 3 in the map.
             std::unordered_map<string, int> combined;
-
             //Add Songs
             for (int i = 0; i < filteredSongs1.size(); i++) {
                 combined[filteredSongs1[i].getTitle()] = 1;
@@ -206,7 +217,8 @@ int main() {
                 }
             }
 
-            //Quick
+            // Same as above but for the other three filtered song vectors,
+            // which were created by  filtering the vectors sorted by quick sort
             std::unordered_map<string, int> combined1;
             for (int i = 0; i < filteredSongs4.size(); i++) {
                 combined1[filteredSongs4[i].getTitle()] = 1;
@@ -223,8 +235,8 @@ int main() {
                     if (combined1[filteredSongs6[i].getTitle()] == 2) {
                         combined1[filteredSongs6[i].getTitle()] = 3;
                     }
-                    if (combined[filteredSongs6[i].getTitle()] == 1) {
-                        combined[filteredSongs6[i].getTitle()] = 2;
+                    if (combined1[filteredSongs6[i].getTitle()] == 1) {
+                        combined1[filteredSongs6[i].getTitle()] = 2;
                     }
                 }
             }
@@ -244,7 +256,6 @@ int main() {
                 }
                 if (count == 10) { break; }
             }
-
             cout << "\nTop 10 songs sorted by " << sortBy << " using Quick Sort:\n";
             count = 0;
             for (int i = 0; i < filteredSongs4.size(); ++i) {
@@ -270,26 +281,29 @@ int main() {
                 cout << "Goodbye!" << endl;
                 break;
             }
-        } else {
+        } else { // if sortBy is not "all"
             vector<Song> mergeSongs = songs;
             vector<Song> quickSongs = songs;
 
+            // Sort songs with merge sort based on whatever the user chose to sort by
             auto startMerge = chrono::high_resolution_clock::now();
             mergeSort(mergeSongs, 0, mergeSongs.size() - 1, sortBy);
             auto endMerge = chrono::high_resolution_clock::now();
             auto mergeTime = chrono::duration_cast<chrono::milliseconds>(endMerge - startMerge).count();
 
+            // Sort songs with quick sort based on whatever the user chose to sort by
             auto startQuick = chrono::high_resolution_clock::now();
             quickSort(quickSongs, 0, quickSongs.size() - 1, sortBy);
             auto endQuick = chrono::high_resolution_clock::now();
             auto quickTime = chrono::duration_cast<chrono::milliseconds>(endQuick - startQuick).count();
 
-
             if (sortBy == "duration") {
+                // Conduct binary search on the vectors sorted by merge sort and quick sort in order to filter them by duration
                 int target = duration;
                 vector<Song> filteredSongs1 = binarySearch(mergeSongs, 0, songs.size() - 1, sortBy, target);
                 vector<Song> filteredSongs2 = binarySearch(quickSongs, 0, songs.size() - 1, sortBy, target);
 
+                // Output
                 cout << "\nTop 10 songs sorted by " << sortBy << " using Merge Sort:\n";
                 for (int i = 2495; i < 2505; ++i) {
                     const Song &s = filteredSongs1[i];
@@ -299,7 +313,6 @@ int main() {
                          << " | " << s.getDuration()
                          << "s | " << s.getPopularity() << endl;
                 }
-
                 cout << "\nTop 10 songs sorted by " << sortBy << " using Quick Sort:\n";
                 for (int i = 2495; i < 2505; ++i) {
                     const Song &s = filteredSongs2[i];
@@ -312,10 +325,12 @@ int main() {
             }
 
             if (sortBy == "popularity") {
+                // Conduct binary search on the vectors sorted by merge sort and quick sort in order to filter them by duration
                 int target = popularity;
                 vector<Song> filteredSongs1 = binarySearch(mergeSongs, 0, songs.size() - 1, sortBy, target);
                 vector<Song> filteredSongs2 = binarySearch(quickSongs, 0, songs.size() - 1, sortBy, target);
 
+                // Output
                 cout << "\nTop 10 songs sorted by " << sortBy << " using Merge Sort:\n";
                 for (int i = 2495; i < 2505; ++i) {
                     const Song &s = filteredSongs1[i];
@@ -325,7 +340,6 @@ int main() {
                          << " | " << s.getDuration()
                          << "s | " << s.getPopularity() << endl;
                 }
-
                 cout << "\nTop 10 songs sorted by " << sortBy << " using Quick Sort:\n";
                 for (int i = 2495; i < 2505; ++i) {
                     const Song &s = filteredSongs2[i];
@@ -338,12 +352,14 @@ int main() {
             }
 
             if (sortBy == "releaseDate") {
+                // Conduct binary search on the vectors sorted by merge sort and quick sort in order to filter them by duration
                 string target = releaseDate;
                 vector<Song> filteredSongs1 = binarySearch(mergeSongs, 0, songs.size() - 1, sortBy, target);
                 vector<Song> filteredSongs2 = binarySearch(quickSongs, 0, songs.size() - 1, sortBy, target);
 
+                // Output
                 cout << "\nTop 10 songs sorted by " << sortBy << " using Merge Sort:\n";
-                count = 0;
+                int count = 0;
                 for (int i = 0; i < 5000; ++i) {
                     const Song &s = filteredSongs2[i];
                     if (s.getReleaseDate() >= releaseDate) {
@@ -356,7 +372,6 @@ int main() {
                     }
                     if (count == 10) {break;}
                 }
-
                 cout << "\nTop 10 songs sorted by " << sortBy << " using Quick Sort:\n";
                 count = 0;
                 for (int i = 0; i < 5000; ++i) {

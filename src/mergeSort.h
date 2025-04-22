@@ -4,10 +4,8 @@
 using std::vector;
 
 //Algorithm Credit: Module 8 Merge Sort Slideshow
-
 void merge(vector<Song>& songs, int left, int mid, int right, const string& comparison)
 {
-    // Create X ← arr[left..mid] & Y ← arr[mid+1..right]
     int n1 = mid - left + 1;
     int n2 = right - mid;
 
@@ -19,13 +17,14 @@ void merge(vector<Song>& songs, int left, int mid, int right, const string& comp
     for (int j = 0; j < n2; j++)
         Y[j] = songs[mid + 1 + j];
 
-    // Merge the arrays X and Y into arr
+    // Merge the vectors X and Y into arr
     int i, j, k;
     i = 0;
     j = 0;
     k = left;
     while (i < n1 && j < n2)
     {
+        // Merge X and Y differently depending on which attribute the vector is being sorted by
         if (comparison == "duration") {
             if (X[i].getDuration() <= Y[j].getDuration())
             {
@@ -84,7 +83,7 @@ void mergeSort(vector<Song>& songs, int left, int right, const string& compariso
 {
     if (left < right)
     {
-        // m is the point where the array is divided into two subarrays
+        // mid is the point where the array is divided into two subarrays
         int mid = left + (right - left) / 2;
 
         mergeSort(songs, left, mid, comparison);

@@ -10,4 +10,5 @@ add_executable(Main
         src/Song.cpp
         src/mergeSort.h
         src/quickSort.h
+        src/binarySearch.h
 )

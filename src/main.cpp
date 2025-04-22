@@ -49,13 +49,17 @@ int main() {
     }
     file.close();
 
+    cout << "___________________________________________________________________________________________\n"
+            "Hello! Welcome to the Song Finder. We're going to find songs that meet your specifications.\n"
+            "___________________________________________________________________________________________" << endl;
+
     while (true) {
         string releaseDate;
         int duration;
         int popularity;
 
         while (true) {
-            cout << "What release year would you like the song to be? (2000 - 2020) " << endl;
+            cout << "What release year would you like the songs to be? (2000 - 2020) " << endl;
             cin >> releaseDate;
             if (all_of(releaseDate.begin(), releaseDate.end(), [](char c){return isdigit(c);})){
                 break;
@@ -78,7 +82,7 @@ int main() {
 
         string popPref;
         while (true) {
-            cout << "How popular do you want the song to be? (0 - 100) " << endl;
+            cout << "How popular do you want the songs to be? (0 - 100) " << endl;
             cin >> popPref;
             if (isPopularityGood(popPref)) {
                 popularity = stoi(popPref);
@@ -94,9 +98,17 @@ int main() {
              << "Max Length: " << duration << " seconds\n"
              << "Popularity: " << popularity << " (0-100)\n";
 
-        cout << "\nSort by which attribute? (duration / popularity / releaseDate): ";
         string sortBy;
-        cin >> sortBy;
+        while (true) {
+            cout << "\nSort by which attribute? (duration / popularity / releaseDate): ";
+            cin >> sortBy;
+            if (sortBy == "duration" || sortBy == "popularity" || sortBy == "releaseDate") {
+                break;
+            }
+            else {
+                cout << "bad input" << endl;
+            }
+        }
 
         vector<Song> mergeSongs = songs;
         vector<Song> quickSongs = songs;
@@ -145,6 +157,7 @@ int main() {
         cout << "Would like to go again? Y or y for yes, any other key for no" << endl;
         cin >> goAgain;
         if (goAgain != "Y" && goAgain != "y") {
+            cout << "Goodbye!" << endl;
             break;
         }
     }

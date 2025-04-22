@@ -68,10 +68,8 @@ int main() {
         while (true) {
             cout << "What release year would you like the songs to be? (2000 - 2020) " << endl;
             cin >> releaseDate;
-            if (any_of(releaseDate.begin(), releaseDate.end(), [](unsigned char c){
-                return isalpha(c);
-            })) {
-                cout << "Error: please enter digits only (no letters)." << endl;
+            if (!all_of(releaseDate.begin(), releaseDate.end(), [](char c) { return isdigit(c); })){
+                cout << "Error: please enter digits only." << endl;
                 continue;
             }
             int release = stoi(releaseDate);

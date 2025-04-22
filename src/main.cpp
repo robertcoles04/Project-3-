@@ -343,23 +343,33 @@ int main() {
                 vector<Song> filteredSongs2 = binarySearch(quickSongs, 0, songs.size() - 1, sortBy, target);
 
                 cout << "\nTop 10 songs sorted by " << sortBy << " using Merge Sort:\n";
-                for (int i = 2495; i < 2505; ++i) {
-                    const Song &s = filteredSongs1[i];
-                    cout << s.getTitle() << " | " << s.getArtist()
+                count = 0;
+                for (int i = 0; i < 5000; ++i) {
+                    const Song &s = filteredSongs2[i];
+                    if (s.getReleaseDate() >= releaseDate) {
+                        cout << s.getTitle() << " | " << s.getArtist()
                          << " | " << s.getGenre()
                          << " | " << s.getReleaseDate()
                          << " | " << s.getDuration()
                          << "s | " << s.getPopularity() << endl;
+                        count++;
+                    }
+                    if (count == 10) {break;}
                 }
 
                 cout << "\nTop 10 songs sorted by " << sortBy << " using Quick Sort:\n";
-                for (int i = 2495; i < 2505; ++i) {
+                count = 0;
+                for (int i = 0; i < 5000; ++i) {
                     const Song &s = filteredSongs2[i];
-                    cout << s.getTitle() << " | " << s.getArtist()
+                    if (s.getReleaseDate() >= releaseDate) {
+                        cout << s.getTitle() << " | " << s.getArtist()
                          << " | " << s.getGenre()
                          << " | " << s.getReleaseDate()
                          << " | " << s.getDuration()
                          << "s | " << s.getPopularity() << endl;
+                        count++;
+                    }
+                    if (count == 10) {break;}
                 }
             }
 

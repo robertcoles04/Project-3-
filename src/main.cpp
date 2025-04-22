@@ -166,7 +166,7 @@ int main() {
             startMerge = chrono::high_resolution_clock::now();
             mergeSort(mergeSongs3, 0, mergeSongs3.size() - 1, "releaseDate");
             endMerge = chrono::high_resolution_clock::now();
-            mergeTime = chrono::duration_cast<chrono::milliseconds>(endMerge - startMerge).count();
+            mergeTime += chrono::duration_cast<chrono::milliseconds>(endMerge - startMerge).count();
 
             // Sort songs based on release date using quick sort
             startQuick = chrono::high_resolution_clock::now();

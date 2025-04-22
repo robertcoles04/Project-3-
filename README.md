@@ -2,7 +2,7 @@
 This is the README file for how to run our project giving a step by step guide and pointers.
 
 ### Downloading Repository
-
+When 
 
 This is the template for Project 3 repositories. It includes all the assignment instructions and documentation to help you use GitHub.
 
